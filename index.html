@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#2563eb">
+<title>GoGlobal AI Content Factory</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-512.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon-192.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --white: #ffffff;
+    --gray-50: #f8f9fa;
+    --gray-100: #f1f3f5;
+    --gray-200: #e9ecef;
+    --gray-300: #dee2e6;
+    --gray-400: #ced4da;
+    --gray-500: #adb5bd;
+    --gray-600: #6c757d;
+    --gray-700: #495057;
+    --gray-800: #343a40;
+    --gray-900: #212529;
+    --blue-50: #e7f3ff;
+    --blue-100: #cce5ff;
+    --blue-500: #2563eb;
+    --blue-600: #1d4ed8;
+    --blue-700: #1e40af;
+    --green-50: #ecfdf5;
+    --green-500: #10b981;
+    --red-50: #fef2f2;
+    --red-500: #ef4444;
+    --amber-50: #fffbeb;
+    --amber-500: #f59e0b;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+    --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
+    --shadow-md: 0 4px 6px rgba(0,0,0,0.06), 0 2px 4px rgba(0,0,0,0.04);
+    --shadow-lg: 0 10px 15px rgba(0,0,0,0.06), 0 4px 6px rgba(0,0,0,0.04);
+    --radius-sm: 6px;
+    --radius: 8px;
+    --radius-md: 10px;
+    --radius-lg: 14px;
+    --radius-xl: 18px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: var(--gray-50);
+    color: var(--gray-900);
+    min-height: 100vh;
+    line-height: 1.5;
+  }
+
+  /* TOPBAR */
+  .topbar {
+    background: var(--white);
+    border-bottom: 1px solid var(--gray-200);
+    padding: 0 24px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: var(--shadow-sm);
+  }
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .logo-icon {
+    width: 30px;
+    height: 30px;
+    background: var(--blue-500);
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+  }
+  .logo-text {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--gray-900);
+    letter-spacing: -0.3px;
+  }
+  .logo-badge {
+    font-size: 10px;
+    font-weight: 500;
+    background: var(--blue-50);
+    color: var(--blue-600);
+    padding: 2px 7px;
+    border-radius: 99px;
+    border: 1px solid var(--blue-100);
+  }
+  .api-area {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .api-label {
+    font-size: 12px;
+    color: var(--gray-500);
+    white-space: nowrap;
+  }
+  .api-input-wrap {
+    position: relative;
+  }
+  .api-input {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11.5px;
+    padding: 6px 32px 6px 10px;
+    border: 1px solid var(--gray-300);
+    border-radius: var(--radius-sm);
+    background: var(--gray-50);
+    color: var(--gray-800);
+    width: 240px;
+    outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  .api-input:focus {
+    border-color: var(--blue-500);
+    box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+    background: var(--white);
+  }
+  .api-toggle {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--gray-400);
+    font-size: 13px;
+    padding: 0;
+    line-height: 1;
+  }
+  .api-toggle:hover { color: var(--gray-600); }
+  .api-status {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--gray-300);
+    flex-shrink: 0;
+  }
+  .api-status.active { background: var(--green-500); }
+
+  /* TOPBAR RIGHT / LANGUAGE / INSTALL */
+  .topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .install-btn {
+    display: none;
+    align-items: center;
+    gap: 6px;
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--blue-600);
+    background: var(--blue-50);
+    border: 1px solid var(--blue-100);
+    border-radius: var(--radius-sm);
+    padding: 6px 10px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.15s;
+  }
+  .install-btn:hover {
+    background: var(--blue-100);
+    border-color: var(--blue-500);
+  }
+  .lang-selector {
+    display: flex;
+    gap: 4px;
+  }
+  .lang-btn {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--gray-500);
+    background: var(--white);
+    border: 1px solid var(--gray-300);
+    border-radius: var(--radius-sm);
+    padding: 5px 9px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .lang-btn:hover { border-color: var(--gray-400); color: var(--gray-700); }
+  .lang-btn.active {
+    background: var(--blue-500);
+    border-color: var(--blue-500);
+    color: var(--white);
+  }
+
+  /* MAIN LAYOUT */
+  .main {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 28px 24px 60px;
+  }
+
+  /* INPUT SECTION */
+  .input-section {
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    margin-bottom: 16px;
+    box-shadow: var(--shadow);
+  }
+  .input-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--gray-500);
+    text-transform: uppercase;
+    letter-spacing: 0.7px;
+    margin-bottom: 8px;
+  }
+  .input-row {
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+  }
+  .topic-input {
+    flex: 1;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    padding: 10px 14px;
+    border: 1px solid var(--gray-300);
+    border-radius: var(--radius);
+    background: var(--gray-50);
+    color: var(--gray-900);
+    outline: none;
+    resize: none;
+    min-height: 44px;
+    max-height: 120px;
+    transition: border-color 0.15s, box-shadow 0.15s;
+    line-height: 1.5;
+  }
+  .topic-input:focus {
+    border-color: var(--blue-500);
+    box-shadow: 0 0 0 3px rgba(37,99,235,0.08);
+    background: var(--white);
+  }
+  .topic-input::placeholder { color: var(--gray-400); }
+
+  .input-hint {
+    font-size: 12px;
+    color: var(--gray-500);
+    margin-top: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .hint-sep { color: var(--gray-300); }
+  .hint-chip {
+    display: inline-block;
+    background: var(--gray-100);
+    color: var(--gray-600);
+    border-radius: 4px;
+    padding: 1px 6px;
+    font-size: 11px;
+    cursor: pointer;
+    border: 1px solid var(--gray-200);
+    transition: background 0.1s;
+  }
+  .hint-chip:hover { background: var(--gray-200); color: var(--gray-800); }
+
+  /* MODES GRID */
+  .modes-section {
+    margin-bottom: 16px;
+  }
+  .modes-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--gray-500);
+    text-transform: uppercase;
+    letter-spacing: 0.7px;
+    margin-bottom: 10px;
+  }
+  .modes-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+  .mode-card {
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-md);
+    padding: 14px 14px 12px;
+    cursor: pointer;
+    transition: all 0.15s;
+    box-shadow: var(--shadow-sm);
+    position: relative;
+    overflow: hidden;
+  }
+  .mode-card:hover {
+    border-color: var(--gray-300);
+    box-shadow: var(--shadow);
+    transform: translateY(-1px);
+  }
+  .mode-card.active {
+    border-color: var(--blue-500);
+    background: var(--blue-50);
+    box-shadow: 0 0 0 3px rgba(37,99,235,0.08), var(--shadow);
+  }
+  .mode-card.active::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--blue-500);
+  }
+  .mode-emoji {
+    font-size: 20px;
+    margin-bottom: 8px;
+    display: block;
+    line-height: 1;
+  }
+  .mode-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--gray-800);
+    margin-bottom: 3px;
+  }
+  .mode-card.active .mode-name { color: var(--blue-700); }
+  .mode-desc {
+    font-size: 11px;
+    color: var(--gray-500);
+    line-height: 1.4;
+  }
+  .mode-card.active .mode-desc { color: var(--blue-600); opacity: 0.8; }
+
+  /* GENERATE BUTTON */
+  .generate-btn {
+    width: 100%;
+    padding: 12px 20px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--white);
+    background: var(--blue-500);
+    border: none;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 16px;
+    transition: background 0.15s, transform 0.1s, box-shadow 0.15s;
+    box-shadow: 0 1px 3px rgba(37,99,235,0.3), 0 1px 2px rgba(37,99,235,0.2);
+    letter-spacing: -0.1px;
+  }
+  .generate-btn:hover {
+    background: var(--blue-600);
+    box-shadow: 0 4px 12px rgba(37,99,235,0.3);
+    transform: translateY(-1px);
+  }
+  .generate-btn:active { transform: translateY(0); }
+  .generate-btn:disabled {
+    background: var(--gray-300);
+    box-shadow: none;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  /* OUTPUT */
+  .output-section {
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+  .output-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--gray-100);
+    background: var(--gray-50);
+  }
+  .output-title-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .output-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--gray-300);
+  }
+  .output-dot.streaming {
+    background: var(--green-500);
+    animation: pulse 1s ease-in-out infinite;
+  }
+  .output-dot.done { background: var(--blue-500); }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.6; transform: scale(0.85); }
+  }
+  .output-mode-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--gray-600);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .output-actions {
+    display: flex;
+    gap: 6px;
+  }
+  .action-btn {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    color: var(--gray-600);
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-sm);
+    padding: 5px 10px;
+    cursor: pointer;
+    transition: all 0.12s;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .action-btn:hover {
+    border-color: var(--gray-400);
+    color: var(--gray-800);
+    background: var(--gray-50);
+  }
+  .output-body {
+    padding: 20px;
+    min-height: 200px;
+  }
+  .output-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 200px;
+    color: var(--gray-400);
+    gap: 10px;
+    text-align: center;
+  }
+  .output-empty-icon { font-size: 32px; }
+  .output-empty-text { font-size: 14px; }
+  .output-empty-sub { font-size: 12px; color: var(--gray-400); }
+  .stream-text {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    color: var(--gray-800);
+    line-height: 1.85;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  /* ERROR */
+  .error-box {
+    background: var(--red-50);
+    border: 1px solid #fecaca;
+    border-radius: var(--radius);
+    padding: 14px 16px;
+    font-size: 13px;
+    color: #b91c1c;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .error-icon { flex-shrink: 0; font-size: 16px; }
+
+  /* NOTICE */
+  .notice {
+    background: var(--amber-50);
+    border: 1px solid #fde68a;
+    border-radius: var(--radius);
+    padding: 10px 14px;
+    font-size: 12px;
+    color: #92400e;
+    margin-bottom: 16px;
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+    line-height: 1.5;
+  }
+
+  /* SPINNER */
+  .spinner {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    border: 2px solid rgba(255,255,255,0.4);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 0.65s linear infinite;
+    flex-shrink: 0;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* CHAR COUNTER */
+  .char-count {
+    font-size: 11px;
+    color: var(--gray-400);
+    text-align: right;
+    margin-top: 4px;
+  }
+
+  /* FOOTER */
+  .footer {
+    text-align: center;
+    font-size: 12px;
+    color: var(--gray-400);
+    margin-top: 40px;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 640px) {
+    .topbar { padding: 0 16px; }
+    .api-label { display: none; }
+    .api-input { width: 130px; }
+    .main { padding: 20px 16px 60px; }
+    .modes-grid { grid-template-columns: repeat(2, 1fr); }
+    .logo-badge { display: none; }
+    .topbar-right { gap: 8px; }
+    .install-btn span { display: none; }
+    .lang-btn { padding: 5px 7px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<header class="topbar">
+  <div class="logo">
+    <div class="logo-icon">🌐</div>
+    <span class="logo-text">GoGlobal AI</span>
+    <span class="logo-badge">Content Factory</span>
+  </div>
+  <div class="topbar-right">
+    <button class="install-btn" id="install-btn" onclick="installApp()" title="Install aplikasi ini">
+      ⬇️ <span>Install App</span>
+    </button>
+    <div class="lang-selector" id="lang-selector">
+      <button class="lang-btn" data-lang="id" onclick="selectLang('id')">ID</button>
+      <button class="lang-btn" data-lang="en" onclick="selectLang('en')">EN</button>
+      <button class="lang-btn" data-lang="my" onclick="selectLang('my')">MY</button>
+    </div>
+    <div class="api-area">
+      <span class="api-label">Claude API Key</span>
+      <div class="api-input-wrap">
+        <input
+          type="password"
+          id="api-key"
+          class="api-input"
+          placeholder="sk-ant-api03-..."
+          autocomplete="off"
+          oninput="handleApiKey(this.value)"
+        />
+        <button class="api-toggle" onclick="toggleApiVis()" title="Tampilkan/sembunyikan key">👁</button>
+      </div>
+      <div class="api-status" id="api-status" title="Status API Key"></div>
+    </div>
+  </div>
+</header>
+
+<!-- MAIN -->
+<main class="main">
+
+  <div class="notice">
+    💡 <div>Masukkan Claude API Key kamu di pojok kanan atas. Key disimpan di browser kamu saja — tidak dikirim ke server manapun selain Anthropic. <a href="https://console.anthropic.com/keys" target="_blank" style="color:#92400e;font-weight:500">Dapatkan API key →</a></div>
+  </div>
+
+  <!-- INPUT -->
+  <div class="input-section">
+    <div class="input-label">Topik atau URL YouTube</div>
+    <div class="input-row">
+      <textarea
+        id="topic"
+        class="topic-input"
+        placeholder="Ketik topik bebas atau paste YouTube URL... contoh: cara jualan digital produk dari nol"
+        rows="2"
+        oninput="updateCharCount(this)"
+      ></textarea>
+    </div>
+    <div style="display:flex; align-items:center; justify-content:space-between; margin-top:8px; flex-wrap:wrap; gap:6px;">
+      <div class="input-hint">
+        Contoh cepat:
+        <span class="hint-chip" onclick="setTopic('workflow buat app dengan Claude Code untuk pemula')">Claude Code pemula</span>
+        <span class="hint-chip" onclick="setTopic('kisah Nabi Yusuf menghadapi cobaan')">Nabi Yusuf</span>
+        <span class="hint-chip" onclick="setTopic('cara camping murah di Australia')">Camping Australia</span>
+        <span class="hint-chip" onclick="setTopic('passive income online 2024 tanpa modal')">Passive income</span>
+      </div>
+      <div class="char-count" id="char-count">0 karakter</div>
+    </div>
+  </div>
+
+  <!-- MODES -->
+  <div class="modes-section">
+    <div class="modes-label">Pilih Mode Output</div>
+    <div class="modes-grid">
+      <div class="mode-card active" id="mode-0" onclick="selectMode(0)">
+        <span class="mode-emoji">🔥</span>
+        <div class="mode-name">Viral Analysis</div>
+        <div class="mode-desc">Hook, pattern storytelling, 10 ide remake per niche</div>
+      </div>
+      <div class="mode-card" id="mode-1" onclick="selectMode(1)">
+        <span class="mode-emoji">⚡</span>
+        <div class="mode-name">Shorts Generator</div>
+        <div class="mode-desc">5 script YouTube Shorts siap rekam</div>
+      </div>
+      <div class="mode-card" id="mode-2" onclick="selectMode(2)">
+        <span class="mode-emoji">🧵</span>
+        <div class="mode-name">X Thread</div>
+        <div class="mode-desc">12 tweet viral terstruktur siap posting</div>
+      </div>
+      <div class="mode-card" id="mode-3" onclick="selectMode(3)">
+        <span class="mode-emoji">🎬</span>
+        <div class="mode-name">Storyboard AI</div>
+        <div class="mode-desc">10 scene + Veo3 / Kling / Flux prompt</div>
+      </div>
+      <div class="mode-card" id="mode-4" onclick="selectMode(4)">
+        <span class="mode-emoji">🛒</span>
+        <div class="mode-name">Affiliate Content</div>
+        <div class="mode-desc">Artikel SEO + carousel + social posts</div>
+      </div>
+      <div class="mode-card" id="mode-5" onclick="selectMode(5)">
+        <span class="mode-emoji">🎥</span>
+        <div class="mode-name">AI Movie Maker</div>
+        <div class="mode-desc">Blueprint film AI lengkap dari topik apapun</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GENERATE -->
+  <button class="generate-btn" id="gen-btn" onclick="generate()">
+    ✨ Generate dengan Claude
+  </button>
+
+  <!-- OUTPUT -->
+  <div class="output-section">
+    <div class="output-header">
+      <div class="output-title-row">
+        <div class="output-dot" id="out-dot"></div>
+        <span class="output-mode-label" id="out-label">Output</span>
+      </div>
+      <div class="output-actions">
+        <button class="action-btn" id="copy-btn" onclick="copyOutput()" style="display:none">
+          📋 Copy semua
+        </button>
+        <button class="action-btn" id="dl-btn" onclick="downloadOutput()" style="display:none">
+          ⬇ Download .txt
+        </button>
+      </div>
+    </div>
+    <div class="output-body" id="out-body">
+      <div class="output-empty" id="out-empty">
+        <div class="output-empty-icon">✨</div>
+        <div class="output-empty-text">Siap generate konten</div>
+        <div class="output-empty-sub">Ketik topik, pilih mode, klik Generate</div>
+      </div>
+      <div id="out-content" style="display:none">
+        <div class="stream-text" id="stream-text"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">GoGlobal AI Content Factory · Powered by Claude API · 2024</div>
+
+</main>
+
+<script>
+// ─── STATE ───────────────────────────────────────────
+let selectedMode = 0;
+let isBusy = false;
+let fullOutput = '';
+let apiKeyVisible = false;
+let currentLang = 'id';
+let deferredInstallPrompt = null;
+
+const modeNames = [
+  'Viral Analysis', 'Shorts Generator', 'X Thread',
+  'Storyboard AI', 'Affiliate Content', 'AI Movie Maker'
+];
+
+const LANGS = {
+  id: { name: 'Bahasa Indonesia', in: 'dalam Bahasa Indonesia', closing: 'PENTING: Tulis seluruh output dalam Bahasa Indonesia yang natural dan mengalir.' },
+  en: { name: 'English', in: 'in English', closing: 'IMPORTANT: Write the entire output in natural, fluent English.' },
+  my: { name: 'Bahasa Melayu', in: 'dalam Bahasa Melayu', closing: 'PENTING: Tulis seluruh output dalam Bahasa Melayu yang natural dan lancar.' }
+};
+
+// ─── API KEY ──────────────────────────────────────────
+function handleApiKey(val) {
+  const status = document.getElementById('api-status');
+  if (val.startsWith('sk-ant') && val.length > 20) {
+    status.classList.add('active');
+    localStorage.setItem('gg_api_key', val);
+  } else {
+    status.classList.remove('active');
+    localStorage.removeItem('gg_api_key');
+  }
+}
+
+function toggleApiVis() {
+  const inp = document.getElementById('api-key');
+  apiKeyVisible = !apiKeyVisible;
+  inp.type = apiKeyVisible ? 'text' : 'password';
+}
+
+// Load saved key on startup
+window.addEventListener('load', () => {
+  const saved = localStorage.getItem('gg_api_key');
+  if (saved) {
+    document.getElementById('api-key').value = saved;
+    handleApiKey(saved);
+  }
+});
+
+// ─── LANGUAGE ─────────────────────────────────────────
+function selectLang(lang) {
+  currentLang = LANGS[lang] ? lang : 'id';
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.lang === currentLang);
+  });
+  localStorage.setItem('gg_lang', currentLang);
+}
+
+// Load saved language on startup
+window.addEventListener('load', () => {
+  const savedLang = localStorage.getItem('gg_lang');
+  selectLang(savedLang && LANGS[savedLang] ? savedLang : 'id');
+});
+
+// ─── PWA: SERVICE WORKER ───────────────────────────────
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js').catch(err => console.error('SW registration failed:', err));
+  });
+}
+
+// ─── PWA: INSTALL PROMPT ───────────────────────────────
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredInstallPrompt = e;
+  document.getElementById('install-btn').style.display = 'flex';
+});
+
+function installApp() {
+  if (!deferredInstallPrompt) return;
+  deferredInstallPrompt.prompt();
+  deferredInstallPrompt.userChoice.then(() => {
+    deferredInstallPrompt = null;
+    document.getElementById('install-btn').style.display = 'none';
+  });
+}
+
+window.addEventListener('appinstalled', () => {
+  document.getElementById('install-btn').style.display = 'none';
+  deferredInstallPrompt = null;
+});
+
+// ─── UI HELPERS ───────────────────────────────────────
+function setTopic(text) {
+  const el = document.getElementById('topic');
+  el.value = text;
+  updateCharCount(el);
+  el.focus();
+}
+
+function updateCharCount(el) {
+  document.getElementById('char-count').textContent = el.value.length + ' karakter';
+}
+
+function selectMode(idx) {
+  document.querySelectorAll('.mode-card').forEach((el, i) => {
+    el.classList.toggle('active', i === idx);
+  });
+  selectedMode = idx;
+}
+
+function copyOutput() {
+  navigator.clipboard.writeText(fullOutput).then(() => {
+    const btn = document.getElementById('copy-btn');
+    btn.textContent = '✅ Copied!';
+    setTimeout(() => { btn.textContent = '📋 Copy semua'; }, 2000);
+  });
+}
+
+function downloadOutput() {
+  const topic = document.getElementById('topic').value.slice(0, 40).replace(/[^a-z0-9]/gi, '_');
+  const modeName = modeNames[selectedMode].replace(/\s/g, '_');
+  const blob = new Blob([fullOutput], { type: 'text/plain;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `GoGlobal_${modeName}_${topic}.txt`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+// ─── PROMPTS ──────────────────────────────────────────
+function buildPrompt(mode, topic, lang) {
+  const L = LANGS[lang] || LANGS.id;
+  const p = {
+    0: `Kamu adalah viral content analyst profesional. Topik: "${topic}"\n\nBuat analisis viral lengkap ${L.in}:\n\n## 🔥 VIRAL ANALYSIS REPORT\n\n**📌 Topik Utama:**\n[identifikasi]\n\n**🎣 Hook yang Dipakai:**\n[analisis hook — pertanyaan, angka, shock statement, atau story]\n\n**❓ Kenapa Bisa Viral (5 alasan):**\n1.\n2.\n3.\n4.\n5.\n\n**📖 Struktur Storytelling:**\n[breakdown tahap per tahap]\n\n**💡 Emosi yang Dipancing:**\n[FOMO/Inspirasi/Curiosity/dll + penjelasan]\n\n**🎯 CTA yang Efektif:**\n[analisis call-to-action]\n\n**🔄 10 Ide Remake per Niche:**\n1. Muslim Indonesia:\n2. Emak-emak:\n3. Gen Z:\n4. Affiliate marketer:\n5. Shopee seller:\n6. Travel content:\n7. Finance/investasi:\n8. Parenting:\n9. Bisnis online:\n10. Motivasi islami:\n\nBuat spesifik dan actionable.\n\n${L.closing}`,
+
+    1: `Kamu adalah viral Shorts scriptwriter terbaik Indonesia. Topik: "${topic}"\n\nBuat 5 script YouTube Shorts (45-60 detik) ${L.in} dengan 5 angle berbeda:\n\n---\n## 📱 SHORT #1 — (Angle: Shocking Fact)\n🎬 HOOK (0-3 detik):\n📖 BODY (3-45 detik):\n🎯 CTA (45-60 detik):\n#️⃣ Hashtag:\n\n---\n## 📱 SHORT #2 — (Angle: Storytelling)\n🎬 HOOK:\n📖 BODY:\n🎯 CTA:\n#️⃣ Hashtag:\n\n---\n## 📱 SHORT #3 — (Angle: Tutorial Cepat)\n🎬 HOOK:\n📖 BODY:\n🎯 CTA:\n#️⃣ Hashtag:\n\n---\n## 📱 SHORT #4 — (Angle: Controversial Take)\n🎬 HOOK:\n📖 BODY:\n🎯 CTA:\n#️⃣ Hashtag:\n\n---\n## 📱 SHORT #5 — (Angle: Before/After)\n🎬 HOOK:\n📖 BODY:\n🎯 CTA:\n#️⃣ Hashtag:\n---\n\nBahasa natural, relatable, sesuai algoritma Shorts. Setiap hook wajib bikin orang stop scroll dalam 2 detik.\n\n${L.closing}`,
+
+    2: `Kamu adalah X (Twitter) thread writer viral terbaik Indonesia. Topik: "${topic}"\n\nBuat thread X viral 12 tweet. Max 280 karakter per tweet. ${L.name}, tone smart-casual.\n\n🧵 THREAD: [judul dengan angka atau shocking statement]\n\n1/ [Hook kuat — bikin stop scroll]\n\n2/ [Mulai reveal — jangan langsung kasih jawaban]\n\n3/ [Build tension / fakta menarik]\n\n4/ [Plot twist atau fakta mengejutkan]\n\n5/ [Poin inti 1]\n\n6/ [Poin inti 2]\n\n7/ [Poin inti 3]\n\n8/ [Contoh nyata / case study]\n\n9/ [Kesalahan umum yang sering dilakukan]\n\n10/ [Solusi / insight utama]\n\n11/ [Kesimpulan powerful + lesson]\n\n12/ [CTA: Simpan 🔖 + RT kalau berguna 🔁]\n\nSetiap tweet harus bisa berdiri sendiri tapi bikin penasaran lanjut baca.\n\n${L.closing}`,
+
+    3: `Kamu adalah AI cinematographer dan storyboard artist. Topik: "${topic}"\n\nBuat storyboard 10 scene untuk AI video production:\n\n---\n## 🎬 SCENE 1 — [nama scene]\n⏱ Durasi: [X detik]\n🎭 Mood: [satu kata]\n🖼 Visual: [deskripsi sangat detail — lokasi, cahaya, komposisi]\n🤖 Image Prompt (Flux/Midjourney): \`[English prompt siap pakai]\`\n🎥 Veo3 Prompt: \`[motion + camera + atmosphere]\`\n🎙 Narasi: [${L.name}]\n🎵 Sound: [musik + sfx]\n---\n\n[Ulangi format yang sama untuk Scene 2 sampai Scene 10]\n\nVariasikan shot: wide, medium, close-up, aerial, POV. Buat cinematic dan atmospheric.\n\n${L.closing}`,
+
+    4: `Kamu adalah affiliate marketing specialist. Topik: "${topic}"\n\nBuat paket affiliate content lengkap ${L.in}:\n\n## 🛒 5 PRODUK REKOMENDASI\n[Untuk setiap produk: nama, estimasi harga, platform affiliate, kenapa relevan]\n\n---\n## 📝 ARTIKEL SEO (400 kata)\n**Judul SEO:** [dengan keyword utama]\n**Meta Description:** [max 155 karakter]\n\n[Isi artikel dengan H2 dan H3, naturally mention produk]\n\n---\n## 📱 INSTAGRAM CAROUSEL (7 slide)\nSlide 1 (Cover):\nSlide 2:\nSlide 3:\nSlide 4:\nSlide 5:\nSlide 6:\nSlide 7 (CTA):\n\n---\n## 🐦 3 VARIASI X POST\nPost 1 (informatif):\nPost 2 (storytelling):\nPost 3 (CTA langsung):\n\n---\n## 💰 PROYEKSI KOMISI\n[Estimasi jika 1.000 / 10.000 / 100.000 views]\n\n${L.closing}`,
+
+    5: `Kamu adalah AI film director dan prompt engineer. Topik: "${topic}"\n\nBuat blueprint AI movie production lengkap:\n\n## 🎬 JUDUL FILM\n[Judul sinematik yang kuat]\n\n## 📖 LOGLINE\n[1-2 kalimat]\n\n## 🎭 GENRE & TONE\n\n## 👥 3 KARAKTER UTAMA\n[nama, peran, deskripsi visual detail untuk character consistency]\n\n## 🎨 VISUAL BIBLE\nPalet warna:\nPencahayaan:\nSetting/Era:\nReferensi visual:\n\n## 🎬 5 SCENE KUNCI\n\n### Scene 1: Opening\nVeo3: \`[prompt detail]\`\nKling: \`[prompt]\`\nHailuo: \`[prompt]\`\nNarasi: [${L.name}]\n\n### Scene 2:\n[sama formatnya]\n\n### Scene 3:\n[sama]\n\n### Scene 4:\n[sama]\n\n### Scene 5: Closing\n[sama]\n\n## 🖼 THUMBNAIL CONCEPT\n[Deskripsi thumbnail clickbait yang kuat]\n\n## 🎵 MUSIC DIRECTION\n[Tempo, genre, emotional arc per scene]\n\n${L.closing}`
+  };
+  return p[mode];
+}
+
+// ─── GENERATE ─────────────────────────────────────────
+async function generate() {
+  if (isBusy) return;
+
+  const apiKey = document.getElementById('api-key').value.trim();
+  const topic = document.getElementById('topic').value.trim();
+
+  if (!apiKey || !apiKey.startsWith('sk-ant')) {
+    showError('Masukkan Claude API Key yang valid di pojok kanan atas. Format: sk-ant-api03-...');
+    return;
+  }
+  if (!topic) {
+    document.getElementById('topic').focus();
+    return;
+  }
+
+  isBusy = true;
+  fullOutput = '';
+
+  const btn = document.getElementById('gen-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<div class="spinner"></div> Generating...';
+
+  const dot = document.getElementById('out-dot');
+  dot.className = 'output-dot streaming';
+  document.getElementById('out-label').textContent = modeNames[selectedMode];
+  document.getElementById('out-empty').style.display = 'none';
+  document.getElementById('out-content').style.display = 'block';
+  document.getElementById('stream-text').textContent = '';
+  document.getElementById('copy-btn').style.display = 'none';
+  document.getElementById('dl-btn').style.display = 'none';
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': apiKey,
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-access': 'true'
+      },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-6',
+        max_tokens: 2500,
+        stream: true,
+        messages: [{ role: 'user', content: buildPrompt(selectedMode, topic, currentLang) }]
+      })
+    });
+
+    if (!res.ok) {
+      const err = await res.json();
+      throw new Error(err.error?.message || `HTTP ${res.status}`);
+    }
+
+    const reader = res.body.getReader();
+    const dec = new TextDecoder();
+    const stEl = document.getElementById('stream-text');
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      const chunk = dec.decode(value);
+      for (const line of chunk.split('\n')) {
+        if (!line.startsWith('data: ')) continue;
+        const d = line.slice(6);
+        if (d === '[DONE]') continue;
+        try {
+          const p = JSON.parse(d);
+          if (p.type === 'content_block_delta' && p.delta?.text) {
+            fullOutput += p.delta.text;
+            stEl.textContent = fullOutput;
+          }
+        } catch {}
+      }
+    }
+
+    dot.className = 'output-dot done';
+    document.getElementById('copy-btn').style.display = 'flex';
+    document.getElementById('dl-btn').style.display = 'flex';
+
+  } catch (e) {
+    showError(e.message);
+    dot.className = 'output-dot';
+  }
+
+  isBusy = false;
+  btn.disabled = false;
+  btn.innerHTML = '✨ Generate lagi';
+}
+
+function showError(msg) {
+  document.getElementById('out-empty').style.display = 'none';
+  document.getElementById('out-content').style.display = 'block';
+  document.getElementById('stream-text').innerHTML = `<div class="error-box"><span class="error-icon">❌</span><div><strong>Error:</strong> ${msg}</div></div>`;
+}
+
+// Enter key shortcut
+document.addEventListener('keydown', e => {
+  if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') generate();
+});
+</script>
+</body>
+</html>
