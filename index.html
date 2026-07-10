@@ -554,7 +554,12 @@
     <div class="lang-selector" id="lang-selector">
       <button class="lang-btn" data-lang="id" onclick="selectLang('id')">ID</button>
       <button class="lang-btn" data-lang="en" onclick="selectLang('en')">EN</button>
-      <button class="lang-btn" data-lang="my" onclick="selectLang('my')">MY</button>
+      <button class="lang-btn" data-lang="es" onclick="selectLang('es')">🇪🇸 ES</button>
+      <!--
+        PHASE 2 - Coming soon:
+        JP: Japanese (日本語)
+        ZH: Simplified Chinese (简体中文)
+      -->
     </div>
     <div class="api-area">
       <span class="api-label">Claude API Key</span>
@@ -696,7 +701,10 @@ const modeNames = [
 const LANGS = {
   id: { name: 'Bahasa Indonesia', in: 'dalam Bahasa Indonesia', closing: 'PENTING: Tulis seluruh output dalam Bahasa Indonesia yang natural dan mengalir.' },
   en: { name: 'English', in: 'in English', closing: 'IMPORTANT: Write the entire output in natural, fluent English.' },
-  my: { name: 'Bahasa Melayu', in: 'dalam Bahasa Melayu', closing: 'PENTING: Tulis seluruh output dalam Bahasa Melayu yang natural dan lancar.' }
+  es: { name: 'Español', in: 'in Spanish (Español)', closing: 'Respond entirely in Spanish (Español).' }
+  // PHASE 2 - Coming soon:
+  // JP: Japanese (日本語)
+  // ZH: Simplified Chinese (简体中文)
 };
 
 // ─── API KEY ──────────────────────────────────────────
