@@ -1,4 +1,4 @@
-const CACHE_NAME = 'goglobal-cache-v1';
+const CACHE_NAME = 'goglobal-cache-v2';
 const CACHE_ASSETS = [
   'index.html',
   'manifest.json',
@@ -10,7 +10,11 @@ const CACHE_ASSETS = [
 self.addEventListener('install', (event) => {
   self.skipWaiting();
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll(CACHE_ASSETS))
+    caches.open(CACHE_NAME).then((cache) =>
+      // Bypass the browser's HTTP cache so a fresh deploy is never masked by
+      // a stale disk-cached response during precache.
+      cache.addAll(CACHE_ASSETS.map((url) => new Request(url, { cache: 'reload' })))
+    )
   );
 });
 
