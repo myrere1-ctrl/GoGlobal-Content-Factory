@@ -1,9 +1,11 @@
-const CACHE_NAME = 'goglobal-cache-v2';
+const CACHE_NAME = 'goglobal-cache-v3';
 const CACHE_ASSETS = [
   'index.html',
   'manifest.json',
   'icon-192.svg',
   'icon-512.svg',
+  'icon-192.png',
+  'icon-512.png',
   'offline.html'
 ];
 
