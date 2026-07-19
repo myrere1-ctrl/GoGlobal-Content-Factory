@@ -1,4 +1,4 @@
-const CACHE_NAME = 'goglobal-cache-v4';
+const CACHE_NAME = 'goglobal-cache-v5';
 const CACHE_ASSETS = [
   'index.html',
   'manifest.json',

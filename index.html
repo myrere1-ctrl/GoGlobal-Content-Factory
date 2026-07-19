@@ -1063,7 +1063,7 @@ function buildPrompt(mode, topic, lang) {
 
     4: `Kamu adalah affiliate marketing specialist. Topik: "${topic}"\n\nBuat paket affiliate content lengkap ${L.in}:\n\n## 🛒 5 PRODUK REKOMENDASI\n[Untuk setiap produk: nama, estimasi harga, platform affiliate, kenapa relevan]\n\n---\n## 📝 ARTIKEL SEO (400 kata)\n**Judul SEO:** [dengan keyword utama]\n**Meta Description:** [max 155 karakter]\n\n[Isi artikel dengan H2 dan H3, naturally mention produk]\n\n---\n## 📱 INSTAGRAM CAROUSEL (7 slide)\nSlide 1 (Cover):\nSlide 2:\nSlide 3:\nSlide 4:\nSlide 5:\nSlide 6:\nSlide 7 (CTA):\n\n---\n## 🐦 3 VARIASI X POST\nPost 1 (informatif):\nPost 2 (storytelling):\nPost 3 (CTA langsung):\n\n---\n## 💰 PROYEKSI KOMISI\n[Estimasi jika 1.000 / 10.000 / 100.000 views]\n\n${L.closing}`,
 
-    5: `Kamu adalah AI film director dan prompt engineer. Topik: "${topic}"\n\nBuat blueprint AI movie production lengkap:\n\n## 🎬 JUDUL FILM\n[Judul sinematik yang kuat]\n\n## 📖 LOGLINE\n[1-2 kalimat]\n\n## 🎭 GENRE & TONE\n\n## 👥 3 KARAKTER UTAMA\n[nama, peran, deskripsi visual detail untuk character consistency]\n\n## 🎨 VISUAL BIBLE\nPalet warna:\nPencahayaan:\nSetting/Era:\nReferensi visual:\n\n## 🎬 5 SCENE KUNCI\n\n### Scene 1: Opening\nVeo3: \`[prompt detail]\`\nKling: \`[prompt]\`\nHailuo: \`[prompt]\`\nNarasi: [${L.name}]\n\n### Scene 2:\n[sama formatnya]\n\n### Scene 3:\n[sama]\n\n### Scene 4:\n[sama]\n\n### Scene 5: Closing\n[sama]\n\n## 🖼 THUMBNAIL CONCEPT\n[Deskripsi thumbnail clickbait yang kuat]\n\n## 🎵 MUSIC DIRECTION\n[Tempo, genre, emotional arc per scene]\n\n${L.closing}`
+    5: `Kamu adalah AI film director dan prompt engineer. Topik: "${topic}"\n\nBuat blueprint AI movie production lengkap:\n\n## 🎬 JUDUL FILM\n[Judul sinematik yang kuat]\n\n## 📖 LOGLINE\n[1-2 kalimat]\n\n## 🎭 GENRE & TONE\n\n## 👥 3 KARAKTER UTAMA\n[nama, peran, deskripsi visual detail untuk character consistency]\n\n## 🎨 VISUAL BIBLE\nPalet warna:\nPencahayaan:\nSetting/Era:\nReferensi visual:\n\n## 🎬 5 SCENE KUNCI\n\n### Scene 1: Opening\nVeo3: \`[prompt detail]\`\nKling: \`[prompt]\`\nNarasi: [${L.name}]\n\n### Scene 2:\n[sama formatnya]\n\n### Scene 3:\n[sama]\n\n### Scene 4:\n[sama]\n\n### Scene 5: Closing\n[sama]\n\n## 🖼 THUMBNAIL CONCEPT\n[Deskripsi thumbnail clickbait yang kuat]\n\n## 🎵 MUSIC DIRECTION\n[Tempo, genre, emotional arc per scene]\n\n${L.closing}`
   };
   return p[mode];
 }
@@ -1127,7 +1127,7 @@ async function generate() {
       },
       body: JSON.stringify({
         model: 'claude-sonnet-4-6',
-        max_tokens: 2500,
+        max_tokens: 8192,
         stream: true,
         messages: [{ role: 'user', content: buildPrompt(selectedMode, effectiveTopic, currentLang) }]
       })
